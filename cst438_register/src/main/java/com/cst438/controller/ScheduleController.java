@@ -22,6 +22,7 @@ import com.cst438.domain.Enrollment;
 import com.cst438.domain.EnrollmentRepository;
 import com.cst438.domain.ScheduleDTO;
 import com.cst438.domain.Student;
+import com.cst438.domain.StudentDTO;
 import com.cst438.domain.StudentRepository;
 import com.cst438.service.GradebookService;
 
@@ -155,4 +156,22 @@ public class ScheduleController {
 		return courseDTO;
 	}
 	
+	/*
+	 *  add a student to the system.With the input of the student email and name.
+	 */
+	@PostMapping("/student")
+	@Transactional
+	public Student addStudent(@RequestBody StudentDTO studentDTO) {
+		Student emailIdCheck = studentRepository.findByEmail(studentDTO.email);
+		if(studentDTO != null && emailIdCheck == null){
+			Student student = new Student();		
+			student.setName(studentDTO.name);
+			student.setEmail(studentDTO.email);
+			Student saveStudent = studentRepository.save(student);
+			return saveStudent;
+		}else{
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "emailID is already exists ");
+		}
+		
+	}
 }
