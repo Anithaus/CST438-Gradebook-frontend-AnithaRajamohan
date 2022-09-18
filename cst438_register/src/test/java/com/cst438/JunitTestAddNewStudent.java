@@ -78,6 +78,28 @@ public class JunitTestAddNewStudent {
 
 	}
 	
+	@Test
+	public void holdRegestration()  throws Exception{
+		
+		MockHttpServletResponse	response;
+
+		Student student = new Student();
+		student.setEmail(TEST_STUDENT_EMAIL);
+		student.setName(TEST_STUDENT_NAME);
+		student.setStatusCode(0);
+		student.setStatus(null);
+		
+		given(studentRepository.findByEmail(TEST_STUDENT_EMAIL)).willReturn(student);
+		
+		response = mvc.perform(
+				MockMvcRequestBuilders
+			      .put("/student/test1@csumb.edu"))
+				.andReturn().getResponse();
+		// verify that return status = OK (value 200) 
+		assertEquals(200, response.getStatus());
+
+	}
+	
 	private static String asJsonString(final Object obj) {
 		try {
 
@@ -86,6 +108,6 @@ public class JunitTestAddNewStudent {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 
 }
