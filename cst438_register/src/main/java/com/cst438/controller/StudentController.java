@@ -3,8 +3,10 @@ package com.cst438.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,6 +25,7 @@ public class StudentController {
 	@PostMapping("/student")
 	@Transactional
 	public Student addStudent(@RequestBody StudentDTO studentDTO) {
+		System.out.println("/student called.");
 		Student emailIdCheck = studentRepository.findByEmail(studentDTO.email);
 		if(studentDTO != null && emailIdCheck == null){
 			Student student = new Student();		
@@ -35,5 +38,6 @@ public class StudentController {
 		}
 		
 	}
-
+	
+	
 }
