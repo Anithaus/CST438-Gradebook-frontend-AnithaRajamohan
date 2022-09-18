@@ -3,12 +3,9 @@ package com.cst438;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.cst438.controller.StudentController;
-import com.cst438.domain.ScheduleDTO;
 import com.cst438.domain.Student;
 import com.cst438.domain.StudentDTO;
 import com.cst438.domain.StudentRepository;
@@ -91,12 +87,5 @@ public class JunitTestAddNewStudent {
 		}
 	}
 
-	private static <T> T  fromJsonString(String str, Class<T> valueType ) {
-		try {
-			return new ObjectMapper().readValue(str, valueType);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 }
