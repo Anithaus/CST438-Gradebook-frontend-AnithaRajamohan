@@ -44,22 +44,28 @@ public class StudentController {
 	 *  put a HOLD on a student's registration and release the hold
 	 */
 	
-	@PutMapping("/student/{email}")
+	@PutMapping("/student/{student_id}")
 	@Transactional
-	public void putHold( @PathVariable String email ) {
+	public Student updateHold( @PathVariable int student_id ) {
 		System.out.println("/student/email called.");
 		String holdReason ="Hold on regestration for delay on payment"; //reason for hold
-		Student student = studentRepository.findByEmail(email);
+		Student student = studentRepository.findById(student_id).get();
 
 		if(student != null) {
 			
 			//checking if StatusCode is equal to 0 then hold the student
-			if(student.getStatusCode()  == 0) {			
+			if(student.getStatusCode()  == 0) {		
+				//setting hold
 				student.setStatus(holdReason);
 				student.setStatusCode(1);
+				Student saveStudent = studentRepository.save(student);
+				return saveStudent;
 			}else {
+				//Releasing hold
 				student.setStatus(null);
 				student.setStatusCode(0);
+				Student saveStudent = studentRepository.save(student);
+				return saveStudent;
 			}
 			
 		}else{
