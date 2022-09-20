@@ -7,6 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import java.util.Optional;
+
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,12 +29,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
+
 @ContextConfiguration(classes = { StudentController.class, Student.class, StudentDTO.class, StudentRepository.class})
 @WebMvcTest
 
 public class JunitTestAddNewStudent {
 	public static final String TEST_STUDENT_EMAIL = "test1@csumb.edu";
 	public static final String TEST_STUDENT_NAME = "test1";
+	public static final int TEST_STUDENT_ID = 0;
 
 	@Autowired
 	private MockMvc mvc;
@@ -49,7 +54,7 @@ public class JunitTestAddNewStudent {
 		studDTO.email=TEST_STUDENT_EMAIL;
 		studDTO.name=TEST_STUDENT_NAME;
 
-		// then do an http post request with body of student as JSON
+		// then do an Http post request with body of student as JSON
 		response = mvc.perform(
 						MockMvcRequestBuilders
 					      .post("/student")
@@ -86,15 +91,17 @@ public class JunitTestAddNewStudent {
 		Student student = new Student();
 		student.setEmail(TEST_STUDENT_EMAIL);
 		student.setName(TEST_STUDENT_NAME);
+		student.setStudent_id(TEST_STUDENT_ID);
 		student.setStatusCode(0);
 		student.setStatus(null);
-		
-		given(studentRepository.findByEmail(TEST_STUDENT_EMAIL)).willReturn(student);
-		
+
+		given(studentRepository.findById(TEST_STUDENT_ID)).willReturn(Optional.of(student));
+
 		response = mvc.perform(
 				MockMvcRequestBuilders
-			      .put("/student/test1@csumb.edu"))
+			      .put("/student/0"))
 				.andReturn().getResponse();
+
 		// verify that return status = OK (value 200) 
 		assertEquals(200, response.getStatus());
 
@@ -104,6 +111,7 @@ public class JunitTestAddNewStudent {
 		try {
 
 			return new ObjectMapper().writeValueAsString(obj);
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
