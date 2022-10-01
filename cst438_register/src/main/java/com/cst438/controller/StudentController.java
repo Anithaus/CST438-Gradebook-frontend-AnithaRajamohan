@@ -3,6 +3,7 @@ package com.cst438.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import com.cst438.domain.StudentDTO;
 import com.cst438.domain.StudentRepository;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class StudentController {
 	
 	@Autowired
@@ -35,7 +37,7 @@ public class StudentController {
 			Student saveStudent = studentRepository.save(student);
 			return saveStudent;
 		}else{
-			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "emailID is already exists ");
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "emailID is already exists");
 		}
 		
 	}
